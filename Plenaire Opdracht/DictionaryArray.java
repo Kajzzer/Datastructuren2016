@@ -41,13 +41,26 @@ public class DictionaryArray {
 		return dict; 
 	}
 
-	public checkWords(String dict[], String sample[]){
+	public void checkWords(String dict[], String sample[]){
 
 		for(int i=0; i < sample.length; i++){
+
+			boolean compare = false;
+
 			for(int j=0; j < dict.length; j++){
-				
+				if(sample[i] == dict[j]){
+					compare = true;
+					// System.out.println("YES!!!!!!!!");
+				}
 			}
-		}
+			if(compare == true){
+				System.out.println("The word '" + sample[i] + 
+					"' is in the dictionary.");
+			} else {
+				System.out.println("The word '" + sample[i] + 
+					"' is not in the dictionary.");
+			}
+		}	
 	}
 }
 
