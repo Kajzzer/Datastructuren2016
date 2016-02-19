@@ -7,6 +7,8 @@ public class DictionaryHashC {
 	public static void main(String[] args) {
 		DictionaryHashC dhc = new DictionaryHashC();
 		SimonsLinkedHash wllh = dhc.readH("wordlist.txt");
+		// for(int i=0;i<wllh.size();i++)
+			System.out.println(wllh);
 		String[] sample = dhc.readA("sample_0OXg@T=T55.txt");
 
 		long startTime = System.currentTimeMillis();
@@ -34,7 +36,7 @@ public class DictionaryHashC {
 				// Gets a key (positive ASCII value of the word)  
 				key = Math.abs(control.hashCode());
 				// Puts the word with key in the hashtable
-				sht.putL(key, control);
+				sht.put(key, control);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,18 +76,23 @@ public class DictionaryHashC {
 
 		// Counter for the number of verified words
 		int verified = 0;
+		
 
 		// Goes through every word in the sample file for comparison
-		for(int i=0; i<ssht.length;i++){
-				// Gets a key (positive ASCII value of the sample word) 
-				int sampleKey = Math.abs(ssht[i].hashCode() % wlsht.size());
-				String wlword = wlsht.get(sampleKey);				
-				// If the words are the same, verify it
-				if(ssht[i].equals(wlword)) {
-					verified += 1;
-					break;
+		for(int i=0; i < ssht.length; i++){
+			boolean check = false;
+			// Gets a key (positive ASCII value of the sample word) 
+			int sampleKey = Math.abs(ssht[i].hashCode() % wlsht.size());
+			String wlword = wlsht.get(sampleKey);
+			if(wlword != null) {
+				LinkedHashEntry entry = wlsht.hashTable[sampleKey]; 
+				while(ssht[i].equals(wlword) == false && entry.getNext() != null) {
+					// If the words are the same, verify it
+						entry = entry.getNext();
 				}
-						
+				if(ssht[i].equals(wlword))
+					verified += 1;
+			}
 		}
 		return verified;	
 	}

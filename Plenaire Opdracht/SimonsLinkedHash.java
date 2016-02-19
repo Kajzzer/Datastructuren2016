@@ -31,7 +31,7 @@ public class SimonsLinkedHash {
     }
  
     // Put a new entry on the place of the key in the hashtable
-    public void putL(int key, String value) {
+    public void put(int key, String value) {
         int hash = (key % TABLESIZE);
         // If the entry has a value, go to the next entry
         if (hashTable[hash] == null)
