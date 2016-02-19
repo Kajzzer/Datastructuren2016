@@ -18,11 +18,11 @@ public class DictionaryArray {
 		long startTime = System.currentTimeMillis();
 		int verified = da.checkWords(dict,sample);
 		long endTime = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
+		long totalTime = (endTime - startTime)*1000;
 
 		System.out.println("The ratio is "+ verified + " verified words" +
 			" of the " + sample.length + " total words.");
-		System.out.println("It took the program " + totalTime + "ms to verify" +
+		System.out.println("It took the program " + totalTime + "ns to verify" +
 			" the sample file.");
 	}	
 

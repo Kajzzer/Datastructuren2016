@@ -6,8 +6,8 @@ public class SimonsLinkedHash {
 
     // Makes a hashtable with null-values
 	SimonsLinkedHash() {
-		hashTable = new LinkedHashEntry[TABLE_SIZE];
-            for (int i = 0; i < TABLE_SIZE; i++)
+		hashTable = new LinkedHashEntry[TABLESIZE];
+            for (int i = 0; i < TABLESIZE; i++)
                   hashTable[i] = null;
 	}
 
@@ -17,26 +17,27 @@ public class SimonsLinkedHash {
         int hash = (key % TABLESIZE);
         // If the entry has a value and the keys aren't equal,
         // go to the next entry
-        if (table[hash] == null)
+        if (hashTable[hash] == null)
                   return null;
             else {
-                  LinkedHashEntry entry = table[hash];
+                  LinkedHashEntry entry = hashTable[hash];
                   while (entry != null && entry.getKey() != key)
                         entry = entry.getNext();
                   if (entry == null)
                         return null;
                   else
                         return entry.getValue();
+        }
     }
  
     // Put a new entry on the place of the key in the hashtable
-    public void put(int key, String value) {
+    public void putL(int key, String value) {
         int hash = (key % TABLESIZE);
         // If the entry has a value, go to the next entry
-        if (table[hash] == null)
-                  table[hash] = new LinkedHashEntry(key, value);
+        if (hashTable[hash] == null)
+                  hashTable[hash] = new LinkedHashEntry(key, value);
             else {
-                  LinkedHashEntry entry = table[hash];
+                  LinkedHashEntry entry = hashTable[hash];
                   while (entry.getNext() != null && entry.getKey() != key)
                         entry = entry.getNext();
                   if (entry.getKey() == key)

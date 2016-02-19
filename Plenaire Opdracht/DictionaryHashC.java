@@ -2,15 +2,15 @@
 import java.util.*;
 import java.io.*;
 
-public class DictionaryHashOA {
+public class DictionaryHashC {
 
 	public static void main(String[] args) {
-		DictionaryHashOA dhoa = new DictionaryHashOA();
-		SimonsHashTable wlsht = dhoa.readH("wordlist.txt");
-		String[] sample = dhoa.readA("sample_0OXg@T=T55.txt");
+		DictionaryHashC dhc = new DictionaryHashC();
+		SimonsLinkedHash wllh = dhc.readH("wordlist.txt");
+		String[] sample = dhc.readA("sample_0OXg@T=T55.txt");
 
 		long startTime = System.currentTimeMillis();
-		int verified = dhoa.compare(wlsht, sample);
+		int verified = dhc.compare(wllh, sample);
 		long endTime = System.currentTimeMillis();
 		long totalTime = (endTime - startTime)*1000;
 
@@ -21,10 +21,10 @@ public class DictionaryHashOA {
 	}
 
 	// Read out a file and puts it into a hashtable
-	public SimonsHashTable readH(String file){
+	public SimonsLinkedHash readH(String file){
 
 		String control;
-		SimonsHashTable sht = new SimonsHashTable();
+		SimonsLinkedHash sht = new SimonsLinkedHash();
 		int key = 0;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(file)))
@@ -34,7 +34,7 @@ public class DictionaryHashOA {
 				// Gets a key (positive ASCII value of the word)  
 				key = Math.abs(control.hashCode());
 				// Puts the word with key in the hashtable
-				sht.put(key, control);
+				sht.putL(key, control);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -70,7 +70,7 @@ public class DictionaryHashOA {
 		return dict; 
 	}
 
-	public int compare(SimonsHashTable wlsht, String[] ssht) {
+	public int compare(SimonsLinkedHash wlsht, String[] ssht) {
 
 		// Counter for the number of verified words
 		int verified = 0;
@@ -84,6 +84,7 @@ public class DictionaryHashOA {
 				if(ssht[i].equals(wlword)) {
 					verified += 1;
 					break;
+				}
 						
 		}
 		return verified;	
