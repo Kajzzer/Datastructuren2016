@@ -1,0 +1,10 @@
+Een voertuig heeft een startcoordinaat: (1,1)
+Het voertuig is een vrachtwagen, dus lengte is 3
+Het voertuig gaat verticaal.
+Alle coordinaten zijn dan (1,1), (1,2), (1,3).
+
+Een ander voertuig heeft de coordinaten (2,2), (3,2)
+
+Samen zijn ze dan	{((1,1), (1,2), (1,3)), ((2,2), (3,2))}
+	of 				{(1,1), (1,2), (1,3), (2,2), (3,2)}
+	of				{((1,1): (1,1), (1,2), (1,3)), ((2,2): (2,2), (3,2))}
