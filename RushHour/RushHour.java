@@ -13,7 +13,8 @@ public class RushHour {
 	public void preparations() {
 
 		int gameNumber;
-		SimonsHashTable sht = new SimonsHashTable(32);
+		SimonsHashTable sht = new SimonsHashTable();
+		CoordinatesHashTable takenCoordinates = new CoordinatesHashTable();
 		Vehicle vehicle;
 		int key;
 
@@ -54,8 +55,14 @@ public class RushHour {
 			key = Math.abs(vehicle.hashCode());
 			sht.put(key, vehicle);
 
-			for(int i = 0; i < sht.size();i++)
-				System.out.println(sht.get(i));   
+			Vehicle v = new Vehicle(1,1,2,0);
+
+			v.getCoordinates(1, 4, 2, 1, takenCoordinates);
+			v.getCoordinates(2,3,2,0, takenCoordinates);
+
+
+			 for(int i = 0; i < takenCoordinates.size();i++)
+				System.out.println(takenCoordinates.get(i));   
 		}else if(gameNumber == 2) {
 			System.out.println("You entered two.");
 		}else if(gameNumber == 3) {

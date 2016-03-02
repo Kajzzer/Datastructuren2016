@@ -1,19 +1,19 @@
-public class SimonsHashTable {
+public class CoordinatesHashTable {
     // A big prime number to make the load factor low
 	private final int TABLESIZE = 64;
 
     // Initialize an array of entries for the hashtable
-	HashEntry[] hashTable;
+	CoordinatesHashEntry[] hashTable;
 
     // Makes an hashtable with null-values
-	SimonsHashTable() {
-		hashTable = new HashEntry[TABLESIZE];
+	CoordinatesHashTable() {
+		hashTable = new CoordinatesHashEntry[TABLESIZE];
 		for (int i = 0; i < TABLESIZE; i++)
 			hashTable[i] = null;
 	}
 
     // Gets the value that belongs to the key
-	public Vehicle get(int key) {
+	public int[] get(int key) {
         // Hash is the value of the key that is inside the hashtable
         int hash = (key % TABLESIZE);
         // If the entry has a value and the keys aren't equal,
@@ -29,14 +29,14 @@ public class SimonsHashTable {
     }
  
     // Put a new entry on the place of the key in the hashtable
-    public void put(int key, Vehicle value) {
+    public void put(int key, int[] value) {
         int hash = (key % TABLESIZE);
         // If the entry has a value, go to the next entry
         while (hashTable[hash] != null) {
         	hash = (hash + 1) % TABLESIZE;
         }
         // Make a new entry on the place of the key
-        hashTable[hash] = new HashEntry(hash, value);
+        hashTable[hash] = new CoordinatesHashEntry(hash, value);
     }
 
     // Give the size of the hashtable
