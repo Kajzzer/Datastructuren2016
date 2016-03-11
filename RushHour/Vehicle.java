@@ -34,8 +34,13 @@ public class Vehicle {
 	}
  
 	// Get the coordinates of the vehicle
-	public CoordinatesHashTable getCoordinates(int x, int y, int type, int direction,
-		CoordinatesHashTable takenCoordinates){
+	public CoordinatesHashTable getCarCoordinates(int[] car,
+		CoordinatesHashTable occupied){
+
+		int x = car[0];
+		int y = car[1];
+		int type = car[2];
+		int direction = car[3];
 
 		int length = 0;
 		int[] place = new int[2];
@@ -49,10 +54,10 @@ public class Vehicle {
 			}
 			for(int i = 0; i < length; i++) {
 				place = makeCoordinate((x + i), y);
-				key = place[0]+place[1]*6;
-				takenCoordinates.put(key, place);
+				key = place[0]+place[1]*7;
+				occupied.put(key, place);
 			}
-			return takenCoordinates;
+			return occupied;
 		}else if(direction == 1){
 			if(type == 0 || type == 1) {
 				length = 2;
@@ -61,14 +66,15 @@ public class Vehicle {
 			}
 			for(int i = 0; i < length; i++) {
 				place = makeCoordinate(x, (y + i));
-				key = place[0]+place[1]*6;
-				takenCoordinates.put(key, place);
+				key = place[0]+place[1]*7;
+				occupied.put(key, place);
 			}
-			return takenCoordinates;
+			return occupied;
 		}else{
-			return takenCoordinates;
+			return occupied;
 		}
 	}
+
 
 	public int[] makeCoordinate(int x, int y) {
 		int[] coordinate = new int[2];
