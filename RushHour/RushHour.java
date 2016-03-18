@@ -12,7 +12,7 @@ public class RushHour {
 
 		RushHour game = new RushHour();
 		int[][] board = game.preparations(occupied);
-		// game.moveCars(occupied);
+		game.play(board, occupied);
 	}
 
 	// Prepare the game for the AI to play with
@@ -21,6 +21,7 @@ public class RushHour {
 		int gameNumber;
 		SimonsHashTable sht = new SimonsHashTable();
 		int key;
+		PathHashTable pht = new PathHashTable();
 
 		int[][] test = {
 			{0,0},
@@ -35,6 +36,7 @@ public class RushHour {
 			
 			boardSize = 6;
 
+			// In een klasse gooien
 			int[][] cars = {
         		{4,4,0,0},
         		{3,4,2,1},
@@ -51,15 +53,15 @@ public class RushHour {
         	makeWalls(walls);
 
         	for(int i = 0; i < walls.length; i++){
-        		getWallCoordinates(walls[i], occupied);
+        		putWallCoordinates(walls[i], occupied);
         	}
 
         	for(int i = 0; i < cars.length; i++){
-        		getCarCoordinates(cars[i], occupied);
+        		putCarCoordinates(cars[i], occupied);
         	}
 				
-			for(int i = 0; i < occupied.size();i++)
-				System.out.println(occupied.get(i)); 
+			// for(int i = 0; i < occupied.size();i++)
+			// 	System.out.println(occupied.get(i)); 
 			return cars;	  
 		}else if(gameNumber == 2) {
 			System.out.println("You entered two.");
@@ -73,22 +75,21 @@ public class RushHour {
 	}
 
 
-	// public void moveCars() {
-	// 	if
-	// }
+	public void play(int[][] cars, CoordinatesHashTable occupied) {
 
+		System.out.println("Old situation.");
+		for(int i = 0; i < cars.length; i++) {
+			System.out.println("Car: " + i + ", x: " + cars[i][0] + 
+				", y: " + cars[i][1]);
+		}
 
-
-
-
-
-
-
-
-
-
-
-
+		System.out.println("New situation.");
+		for(int i = 0; i < cars.length; i++) {
+			moveBackward(cars[i], occupied);
+			System.out.println("Car: " + i + ", x: " + cars[i][0] + 
+				", y: " + cars[i][1]);
+		}
+	}
 
 
 
@@ -132,11 +133,11 @@ public class RushHour {
 
 
 	// Get the coordinates of the vehicle
-	public CoordinatesHashTable getCarCoordinates(int[] car,
+	public CoordinatesHashTable putCarCoordinates(int[] car,
 		CoordinatesHashTable occupied){
 
 		int length = 0;
-		int[] place = new int[2];
+		int[] newLocation = new int[2];
 		int key;
 
 		int x = car[0];
@@ -144,35 +145,88 @@ public class RushHour {
 		int type = car[2];
 		int direction = car[3];
 
-
+		if(type == 0 || type == 1) {
+			length = 2;
+		} else if(type == 2) {
+			length = 3;
+		}
 		if(direction == 0) {
-			if(type == 0 || type == 1) {
-				length = 2;
-			} else if(type == 2) {
-				length = 3;
-			}
 			for(int i = 0; i < length; i++) {
-				place = makeCoordinate((x + i), y);
-				key = place[0]+place[1]*8;
-				occupied.put(key, place);
+				newLocation = makeCoordinate((x + i), y);
+				key = newLocation[0]+newLocation[1]*8;
+				occupied.put(key, newLocation);
 			}
-			return occupied;
 		}else if(direction == 1){
-			if(type == 0 || type == 1) {
-				length = 2;
-			} else if(type == 2) {
-				length = 3;
-			}
 			for(int i = 0; i < length; i++) {
-				place = makeCoordinate(x, (y + i));
-				key = place[0]+place[1]*8;
-				occupied.put(key, place);
+				newLocation = makeCoordinate(x, (y + i));
+				key = newLocation[0]+newLocation[1]*8;
+				occupied.put(key, newLocation);
 			}
-			return occupied;
-		}else{
-			return occupied;
+		}
+		return occupied;
+	}
+
+	public void moveForward(int[] car, CoordinatesHashTable occupied) {
+		int length = 0;
+		int[] newLocation = new int[2];
+		int key;
+		int[] check = new int[2];
+
+		int x = car[0];
+		int y = car[1];
+		int type = car[2];
+		int direction = car[3];
+
+		if(type == 0 || type == 1) {
+			length = 2;
+		} else if(type == 2) {
+			length = 3;
+		}
+		if(direction == 0) {
+			newLocation = makeCoordinate((x + length),y);
+			key = newLocation[0] + newLocation[1]*8;
+			check = occupied.get(key);
+			// System.out.println(check + ", " + key);
+			if(check == null && key <= ((boardSize +2)*4)) 
+				car[car[3]] += 1;
+		}else if(direction == 1){
+			newLocation = makeCoordinate(x, (y + length));
+			key = newLocation[0]+newLocation[1]*8;
+			occupied.get(key);
+			check = occupied.get(key);
+			// System.out.println(check + ", " + key);
+			if(check == null && key <= ((boardSize +2)*4)) 
+				car[car[3]] += 1;
 		}
 	}
+
+	public void moveBackward(int[] car, CoordinatesHashTable occupied) {
+		int[] newLocation = new int[2];
+		int key;
+		int[] check = new int[2];
+
+		int x = car[0];
+		int y = car[1];
+		int direction = car[3];
+
+		if(direction == 0) {
+			newLocation = makeCoordinate((x -1 ),y);
+			key = newLocation[0] + newLocation[1]*8;
+			check = occupied.get(key);
+			// System.out.println(check + ", " + key);
+			if(check == null && key <= ((boardSize +2)*4)) 
+				car[car[3]] -= 1;
+		}else if(direction == 1){
+			newLocation = makeCoordinate(x, (y - 1));
+			key = newLocation[0]+newLocation[1]*8;
+			occupied.get(key);
+			check = occupied.get(key);
+			// System.out.println(check + ", " + key);
+			if(check == null && key <= ((boardSize +2)*4)) 
+				car[car[3]] -= 1;
+		}
+	}
+
 
 	public int[] makeCoordinate(int x, int y) {
 		int[] coordinate = new int[2];
@@ -181,23 +235,69 @@ public class RushHour {
 		return coordinate;
 	}
 
-	public void getWallCoordinates(int[] wall, 
+	public void putWallCoordinates(int[] wall, 
 		CoordinatesHashTable occupied) {
 			
 		int key = wall[0]+wall[1]*8;
 		occupied.put(key, wall);
 	}
 
-	private void print(int[] wall, int i){
-		System.out.println("i: " + i + ", x: " + wall[0] + ", y: " + wall[1]);
+	private void print(int[] array, int i){
+		System.out.println("i: " + i + ", x: " + array[0] + ", y: " + array[1]);
 	}
 
-	public void moveForward(int[] car) {
-		car[car[3]] += 1;
+	public boolean isPrime(int number) {
+
+		// Eliminate the need to check versus even numbers
+
+		if (number % 2 == 0)
+			return false;
+
+		// Check against all odd numbers
+
+		for (int i = 3; i * i <= number; i += 2) {
+
+			if (number % i == 0)
+				return false;
+
+		}
+
+		// If we make it here we know it is odd
+
+		return true;
+
 	}
 
-	public void moveBackward(int[] car) {
-		car[car[3]] -= 1;
+	// Receives a number and returns the next prime
+	// number that follows
+
+	public int getNextPrime(int minNumberToCheck) {
+
+		for (int i = minNumberToCheck; true; i++) {
+
+			if (isPrime(i))
+				return i;
+
+		}
+
+	}
+	
+	public int[] primeArray(int minValue, int length) {
+		int [] primes = new int[length];
+		for(int i = 0; i < length; i++) {
+			primes[i] = getNextPrime(minValue);
+			minValue = primes[i] + 1;
+		}
+			
+		return primes;
+	}
+	public int boardHashValue(int[][] cars, int[] hashPrimes, int carsAmount) {
+		int hashValue = 0;
+		for(int i = 0; i < carsAmount; i++) {
+			hashValue += cars[i][0] * hashPrimes[2 * i];
+			hashValue += cars[i][1] * hashPrimes[2 * i + 1];
+		}
+		return hashValue;
 	}
 
 }
