@@ -6,7 +6,7 @@ public class VehiclesHashtable {
 	static int boardSize = 6;
 
     public static void main(String[] args) {
-        int[][] cars = {
+        int[][] cars = new int[][] {
         		{4,4,0,0},
         		{3,4,2,1},
         		{4,1,2,1},
@@ -23,7 +23,9 @@ public class VehiclesHashtable {
         
         int carsAmount = cars.length;
         
-        int [] hashPrimes = primeArray(100, carsAmount * 8);
+
+        
+        int [] hashPrimes = primeArray(50, carsAmount * 50);
         int hashValue = boardHashValue(cars, hashPrimes, carsAmount);
         
         PathHashTable pht = new PathHashTable();
@@ -32,7 +34,7 @@ public class VehiclesHashtable {
         		
         
         List<Integer> hvList = new ArrayList<Integer>();
-        hashValue = Arrays.deepHashCode(cars);
+//        hashValue = Arrays.deepHashCode(cars);
         hvList.add(hashValue);
         System.out.println(hvList);
         int getal = 0;
@@ -70,7 +72,10 @@ public class VehiclesHashtable {
             			steps += 1;
                 	
             			if (carClone[2] == 0 && carClone[carClone[3]] == 7){
-            				System.out.println("the end");
+            				int[][] newCars = newCars(cars, k, cars[k][3], steps);
+            				int newHash = boardHashValue(newCars, hashPrimes, carsAmount);
+            				newHash = pht.put(hashValue, newHash, newCars);
+            				System.out.println(pht.getPath(newHash));
             				System.exit(0);
             			}
             			
@@ -126,7 +131,6 @@ public class VehiclesHashtable {
         	hvList = newHVList;
         	getal++;
         	System.out.println(getal);
-        	System.out.println(newHVList.get(0));
 
         	}
         //for(int a = 0; a < occupied.size();a++)
@@ -279,14 +283,13 @@ public class VehiclesHashtable {
 	
 		return primes;
 	}
+
 	
 	public static int boardHashValue(int [][] cars, int [] hashPrimes, int carsAmount) {
 		int hashValue = 1;
 		for(int i = 0; i < carsAmount; i++) {
-			hashValue += cars[i][0] * hashPrimes[4 * i];
-			hashValue += cars[i][1] * hashPrimes[4 * i + 1];
-			hashValue += cars[i][2] * hashPrimes[4 * i + 2];
-			hashValue += cars[i][3] * hashPrimes[4 * i + 3];
+			hashValue += cars[i][0] * hashPrimes[50 * i];
+			hashValue += cars[i][1] * hashPrimes[50 * i + 1];
 		}
 		return hashValue;
 	}
